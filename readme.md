@@ -33,6 +33,7 @@ Laravel is accessible, yet powerful, providing tools needed for large, robust ap
 12- Comienzo del nuevo Modelo
 13- Preparando Cargos. La magia del Select
 14- Crud Cargos
+15- Modelo Empleado
 
 
 

@@ -17,5 +17,10 @@ class Position extends Model
         return $this->belongsTo('App\Departure');
     }
 
+    
+    public function employees()
+    {
+        return $this->hasMany('App\Employee');
+    }
 
 }
