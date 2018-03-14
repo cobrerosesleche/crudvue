@@ -29,6 +29,8 @@ Laravel is accessible, yet powerful, providing tools needed for large, robust ap
 8- Creando Departamento
 9- Actualizando el estado 
 10- Eliminando Departamento
+11- Modificar Departamento
+12- Comienzo del nuevo Modelo
 
 
 
