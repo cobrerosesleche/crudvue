@@ -20,5 +20,7 @@ Route::put('/departure/update','DepartureController@update')->name('departureupd
 
 Route::get('/allQuery','QueryController@allQuery')->name('allQuery');
 
-
+Route::post('/position/create','PositionController@create')->name('positioncreate');
+Route::delete('/position/delete/{id}','PositionController@delete')->name('positiondelete');
+Route::put('/position/update','PositionController@update')->name('positionupdate');
 
