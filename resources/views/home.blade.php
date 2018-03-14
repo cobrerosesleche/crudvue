@@ -137,7 +137,7 @@
         <div class="columns margin0 text-center vertical-center personal-menu">
             <div class="column">Empleados 0</div>
             <div class="column">Departamentos @{{ departures.length }}</div>
-            <div class="column">Cargo 0</div>
+            <div class="column">Cargo @{{ positions.length }}</div>
         </div>
 </div>
 <div class="modal" :class="{'is-active' : modalGeneral}">
@@ -211,7 +211,8 @@
                 modalPosition: 0,
                 titlePosition: '',
                 errorTitlePosition: 0,
-                idDeparturePosition: 0
+                idDeparturePosition: 0,
+                idPosition:0
             },
             watch: {
                 modalGeneral: function (value) {
@@ -224,11 +225,69 @@
                     this.modalGeneral = 0;
                     this.titleModal = '';
                     this.messageModal = '';
+                    this.modalDeparture = 0;
+                    this.modalPosition = 0;
                 }, 
-                updatePosition() {},
-                destroyPosition() {},
-                createPosition() {},
-
+                updatePosition() {
+                    if (this.titlePosition == '') {
+                        this.errorTitlePosition = 1;
+                        return;
+                    }
+                    let me = this;
+                    axios.put('{{route('positionupdate')}}', {
+                                'id': this.idPosition,
+                                'title': this.titlePosition,
+                                'departure': this.idDeparturePosition
+                            })
+                        .then(function (response) {
+                            me.titlePosition = '';
+                            me.errorTitlePosition = 0;
+                            me.modalPosition = 0;
+                            me.idDeparturePosition = 0;
+                            me.idPosition = 0;
+                            me.closeModal();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                
+                destroyPosition() {
+                    let me = this;
+                    axios.delete('{{url('/position/delete')}}'+'/'+this.idPosition)
+                        .then(function (response) {
+                            me.titlePosition = '';
+                            me.errorTitlePosition = 0;
+                            me.modalPosition = 0;
+                            me.idDeparturePosition = 0;
+                            me.closeModal();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                
+                createPosition() {
+                    if (this.titlePosition == '') {
+                        this.errorTitlePosition = 1;
+                        return;
+                    }
+                    let me = this;
+                    axios.post('{{route('positioncreate')}}', {
+                                'title': this.titlePosition,
+                                'departure': this.idDeparturePosition
+                            })
+                        .then(function (response) {
+                            me.titlePosition = '';
+                            me.errorTitlePosition = 0;
+                            me.modalPosition = 0;
+                            me.idDeparturePosition = 0;
+                            me.closeModal();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
                 createDeparture() {
 
                    if (this.titleDeparture == '') {
@@ -362,10 +421,26 @@
                                         }
                                     case 'update':
                                         {
+                                            this.modalGeneral = 1;
+                                            this.titleModal = 'Modificación del Cargo';
+                                            this.messageModal = 'Ingrese el nuevo titulo';
+                                            this.modalPosition = 2;
+                                            this.titlePosition = data['title'];
+                                            this.idPosition = data['id'];
+                                            this.errorTitlePosition = 0;
+                                            this.idDeparturePosition = data['departure']['id'];
                                             break;
                                         }
                                     case 'delete':
                                         {
+                                            this.modalGeneral = 1;
+                                            this.titleModal = 'Eliminacion de un Cargo';
+                                            this.messageModal = 'Confirme';
+                                            this.modalPosition = 3;
+                                            this.titlePosition = data['title'];
+                                            this.idPosition = data['id'];
+                                            this.errorTitlePosition = 0;
+                                            this.idDeparturePosition = data['departure']['id'];
                                             break;
                                         }
 
