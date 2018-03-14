@@ -28,6 +28,7 @@ Laravel is accessible, yet powerful, providing tools needed for large, robust ap
 7- Modal II
 8- Creando Departamento
 9- Actualizando el estado 
+10- Eliminando Departamento
 
 
 
