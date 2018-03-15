@@ -128,8 +128,11 @@
                     <div class="column text-center">
                         <h3>Empleado</h3>
                     </div>
-                    <div class="column">
-                       Tabla Empleados
+                    <div class="column" v-if="positions.length">
+                        <a class="button is-success" @click="openModal('employee','create')">Agregar Empleado</a>
+                    </div>
+                    <div class="column" v-else>
+                        <span class="text-danger">Debe existir un cargo por lo menos</span>
                     </div>
                 </div>
             </div>
@@ -167,6 +170,30 @@
                             El nombre del Cargo no puede estar vacio
                         </div>
                     </div>
+
+                    <p class="control" v-if="modalEmployee">
+                        <input class="input" :readonly="modalEmployee==3" placeholder="Nombre" v-model="nameEmployee">
+                        <input class="input" :readonly="modalEmployee==3" placeholder="Apellido" v-model="lastnameEmployee">
+                        <input class="input" :readonly="modalEmployee==3" placeholder="Correo" v-model="emailEmployee">
+                        <input class="input" :readonly="modalEmployee==3" placeholder="Nacimiento" v-model="birthdayEmployee">
+                        <label>Departamento: </label>
+                        <select class="select" :disabled="modalEmployee==3" v-model="idFilterDeparture">
+                            <option v-for="departure in filterDeparture" :value="departure.id">@{{ departure.title }}
+                            </option>
+                        </select>
+                        <label>Cargo: </label>
+                        <select class="select" :disabled="modalEmployee==3" v-model="idFilterPosition">
+                            <option v-for="position in filterPosition" :value="position.id">@{{ position.title }}
+                            </option>
+                        </select>
+                    </p>
+                    <div v-show="errorEmployee" class="columns text-center">
+                        <div class="column text-center text-danger">
+                            @{{ errorMessageEmployee }}
+                        </div>
+                    </div>
+
+
                     <div class="columns button-content">
                         <div class="column">
                         <a class="button is-success" @click="createDeparture()" v-if="modalDeparture==1">Aceptar</a>
@@ -174,8 +201,13 @@
                         <a class="button is-success" @click="destroyDeparture()" v-if="modalDeparture==3">Aceptar</a>                        </div>
                         
                         <a class="button is-success" @click="createPosition()" v-if="modalPosition==1">Aceptar</a>
-                            <a class="button is-success" @click="updatePosition()" v-if="modalPosition==2">Aceptar</a>
-                            <a class="button is-success" @click="destroyPosition()" v-if="modalPosition==3">Aceptar</a>
+                        <a class="button is-success" @click="updatePosition()" v-if="modalPosition==2">Aceptar</a>
+                        <a class="button is-success" @click="destroyPosition()" v-if="modalPosition==3">Aceptar</a>
+
+                        <a class="button is-success" @click="createEmployee()" v-if="modalEmployee==1">Aceptar</a>
+                        <a class="button is-success" @click="updateEmployee()" v-if="modalEmployee==2">Aceptar</a>
+                        <a class="button is-success" @click="destroyEmployee()" v-if="modalEmployee==3">Aceptar</a>
+
 
                         <div class="column">
                             <a class="button is-danger" @click="closeModal()">Cancelar</a>
@@ -212,7 +244,21 @@
                 titlePosition: '',
                 errorTitlePosition: 0,
                 idDeparturePosition: 0,
-                idPosition:0
+                idPosition:0,
+                /*************** Employee **********/
+                idEmployee: 0,
+                employee: [],
+                modalEmployee: 0,
+                nameEmployee: '',
+                lastnameEmployee: '',
+                emailEmployee: '',
+                birthdayEmployee: '',
+                idFilterDeparture: 0,
+                filterDeparture: [],
+                idFilterPosition: 0,
+                filterPosition: [],
+                errorEmployee: 0,
+                errorMessageEmployee: ''
             },
             watch: {
                 modalGeneral: function (value) {
@@ -227,7 +273,12 @@
                     this.messageModal = '';
                     this.modalDeparture = 0;
                     this.modalPosition = 0;
+                    this.modalEmployee = 0;
                 }, 
+                createEmployee() {},
+                updateEmployee() {},
+                destroyEmployee() {},
+
                 updatePosition() {
                     if (this.titlePosition == '') {
                         this.errorTitlePosition = 1;
@@ -452,7 +503,18 @@
                                 switch (action) {
                                     case 'create':
                                         {
-
+                                            this.modalGeneral = 1;
+                                            this.titleModal = 'Creación de Empleado';
+                                            this.messageModal = 'Ingrese los datos del Empleado';
+                                            this.modalEmployee = 1;
+                                            this.nameEmployee = '';
+                                            this.lastnameEmployee = '';
+                                            this.emailEmployee = '';
+                                            this.birthdayEmployee = '';
+                                            this.idFilterDeparture = 0;
+                                            this.filterDeparture = [];
+                                            this.idFilterPosition = 0;
+                                            this.filterPosition = [];
                                             break;
                                         }
                                     case 'update':
