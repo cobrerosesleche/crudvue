@@ -175,7 +175,12 @@
                         <input class="input" :readonly="modalEmployee==3" placeholder="Nombre" v-model="nameEmployee">
                         <input class="input" :readonly="modalEmployee==3" placeholder="Apellido" v-model="lastnameEmployee">
                         <input class="input" :readonly="modalEmployee==3" placeholder="Correo" v-model="emailEmployee">
-                        <input class="input" :readonly="modalEmployee==3" placeholder="Nacimiento" v-model="birthdayEmployee">
+                        <birthdayPicker :birthday.sync="birthdayEmployee"
+                                        v-if="modalEmployee==1 || modalEmployee==2"
+                                        :today="birthdayEmployee"></birthdayPicker>
+                        <input class="input" v-model="birthdayEmployee" readonly v-if="modalEmployee==3">
+
+
                         <label>Departamento: </label>
                         <select class="select" :disabled="modalEmployee==3" v-model="idFilterDeparture">
                             <option v-for="departure in filterDeparture" :value="departure.id">@{{ departure.title }}
