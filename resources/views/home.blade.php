@@ -175,10 +175,8 @@
                         <input class="input" :readonly="modalEmployee==3" placeholder="Nombre" v-model="nameEmployee">
                         <input class="input" :readonly="modalEmployee==3" placeholder="Apellido" v-model="lastnameEmployee">
                         <input class="input" :readonly="modalEmployee==3" placeholder="Correo" v-model="emailEmployee">
-                        <birthdayPicker :birthday.sync="birthdayEmployee"
-                                        v-if="modalEmployee==1 || modalEmployee==2"
-                                        :today="birthdayEmployee"></birthdayPicker>
-                        <input class="input" v-model="birthdayEmployee" readonly v-if="modalEmployee==3">
+                        <input class="input" :readonly="modalEmployee==3" placeholder="fecha" v-model="birthdayEmployee">
+                        <birthdaypicker2 :birthday.sync="birthdayEmployee"></birthdaypicker2>
 
 
                         <label>Departamento: </label>
@@ -268,6 +266,15 @@
             watch: {
                 modalGeneral: function (value) {
                     if (!value) this.allQuery();
+                },
+                idFilterDeparture: function (value) {
+                    let me = this;
+                    this.filterDeparture.map(function (x) {
+                        if (x.id === value) {
+                            me.filterPosition = x.positions;
+                            me.idFilterPosition = me.filterPosition[0].id;
+                        }
+                    });
                 }
             },
 
@@ -516,10 +523,24 @@
                                             this.lastnameEmployee = '';
                                             this.emailEmployee = '';
                                             this.birthdayEmployee = '';
-                                            this.idFilterDeparture = 0;
                                             this.filterDeparture = [];
-                                            this.idFilterPosition = 0;
+
                                             this.filterPosition = [];
+                                            let me = this;
+                                            this.departures.map(function (x) {
+                                                if (x.positions.length) {
+                                                    if (me.filterDeparture.indexOf(x)) me.filterDeparture.push(x);
+                                                }
+                                            });
+                                            if (this.filterDeparture.length) {
+                                                this.idFilterDeparture = this.filterDeparture[0].id;
+                                                this.filterPosition = this.filterDeparture[0].positions;
+                                                this.idFilterPosition = this.filterDeparture[0].positions[0].id;
+                                            } else {
+                                                this.idFilterDeparture = 0;
+                                                this.idFilterPosition = 0;
+                                                this.filterPosition = [];
+                                            }
                                             break;
                                         }
                                     case 'update':

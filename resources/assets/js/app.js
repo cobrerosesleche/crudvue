@@ -16,7 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('birthdayPicker', require('./components/datepicker.vue'));
+Vue.component('birthdaypicker2', require('./components/datepicker.vue'));
 
 const app = new Vue({
     el: '#app'

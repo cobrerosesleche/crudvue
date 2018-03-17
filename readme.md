@@ -38,6 +38,8 @@ Laravel is accessible, yet powerful, providing tools needed for large, robust ap
 16- Empleado. Modificando el Modal
 17- Usando componentes Vue
 
+18- Trabajando con los select
+
 
 
 

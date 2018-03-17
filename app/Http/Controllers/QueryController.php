@@ -12,7 +12,8 @@ class QueryController extends Controller
     public function allQuery(Request $request){     
         if (!$request->ajax()) return redirect('/');    
         return [
-                 'departures'=>Departure::all(),
+                 //'departures'=>Departure::all(),
+                 'departures' => Departure::with('positions')->get(),
                  'positions' => Position::with('departure')->get()
 
                ];
