@@ -190,9 +190,12 @@
                             </option>
                         </select>
                     </p>
+
                     <div v-show="errorEmployee" class="columns text-center">
                         <div class="column text-center text-danger">
-                            @{{ errorMessageEmployee }}
+                            <div v-for="error in errorMessageEmployee">
+                                @{{ error }}
+                            </div>
                         </div>
                     </div>
 
@@ -261,8 +264,8 @@
                 idFilterPosition: 0,
                 filterPosition: [],
                 errorEmployee: 0,
-                errorMessageEmployee: ''
-            },
+                errorMessageEmployee: [],
+                        },
             watch: {
                 modalGeneral: function (value) {
                     if (!value) this.allQuery();
@@ -287,9 +290,26 @@
                     this.modalPosition = 0;
                     this.modalEmployee = 0;
                 }, 
-                createEmployee() {},
+                createEmployee() {
+                    if (this.validateEmployee()) {
+                        return;
+                    }
+                },
                 updateEmployee() {},
                 destroyEmployee() {},
+
+        validateEmployee() {
+            this.errorEmployee = 0;
+            this.errorMessageEmployee = [];
+            if (!this.nameEmployee) this.errorMessageEmployee.push('El nombre no puede estar vacio');
+            if (!this.lastnameEmployee) this.errorMessageEmployee.push("El apellido no puede estar vacio");
+            if (!this.emailEmployee) this.errorMessageEmployee.push('El correo electronico no puede estar vacio');
+            if (!this.birthdayEmployee) this.errorMessageEmployee.push('La fecha de nacimiento no puede estar vacia');
+            if (this.errorMessageEmployee.length) this.errorEmployee = 1;
+            return this.errorEmployee;
+        },
+
+
 
                 updatePosition() {
                     if (this.titlePosition == '') {
