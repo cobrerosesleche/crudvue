@@ -39,6 +39,10 @@ Laravel is accessible, yet powerful, providing tools needed for large, robust ap
 17- Usando componentes Vue
 
 18- Trabajando con los select
+19- Validaciones. Mensajes de error del back.
+20- Mensajes de error en el front
+
+
 
 
 
